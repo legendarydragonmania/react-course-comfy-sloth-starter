@@ -5,7 +5,79 @@ import { getUniqueValues, formatPrice } from '../utils/helpers'
 import { FaCheck } from 'react-icons/fa'
 
 const Filters = () => {
-  return <h4>filters</h4>
+  const {
+    filters: {
+      text,
+      category,
+      company,
+      color,
+      min_price,
+      max_price,
+      price,
+      shipping,
+    },
+    updateFilters,
+    clearFilters,
+    all_products,
+  } = useFilterContext()
+
+  const categories = getUniqueValues(all_products, 'category')
+  const companies = getUniqueValues(all_products, 'company')
+  const colors = getUniqueValues(all_products, 'colors')
+
+  return (
+    <Wrapper>
+      <div className='content'>
+        <form onSubmit={(e) => e.preventDefault()}>
+          {/* search input */}
+          <div className='form-control'>
+            <input
+              type='text'
+              name='text'
+              placeholder='search'
+              className='search-input'
+              value={text}
+              onChange={updateFilters}
+            />
+          </div>
+          {/* end of the search input */}
+          {/* categoreies */}
+          <div className='form-control'>
+            <h5>catergory</h5>
+            {categories.map((c, index) => {
+              return (
+                <button
+                  name='category'
+                  type='button'
+                  className={`${
+                    category === c.toLowerCase() ? 'active' : null
+                  }`}
+                  key={index}
+                  onClick={updateFilters}
+                >
+                  {c}
+                </button>
+              )
+            })}
+          </div>
+          {/* end of categoreies */}
+          {/* companies */}
+          <div className='form-control'>
+            <select value={company} onChange={updateFilters} name='company'>
+              {companies.map((c, index) => {
+                return (
+                  <option key={index} value={c}>
+                    {c}
+                  </option>
+                )
+              })}
+            </select>
+          </div>
+          {/* end of companies */}
+        </form>
+      </div>
+    </Wrapper>
+  )
 }
 
 const Wrapper = styled.section`
